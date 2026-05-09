@@ -1,0 +1,67 @@
+#include <iostream>
+#include <string>
+#include <map>
+
+using namespace std;
+
+class Bank {
+private:
+    map<int, double> accounts;
+
+public:
+    bool CREATE(int X, double Y) {
+        if (accounts.find(X) == accounts.end()) {
+            accounts[X] = Y;
+            return true; // New account created
+        }
+        accounts[X] += Y; // User present, add to balance
+        return false;
+    }
+
+    bool DEBIT(int X, double Y) {
+        if (accounts.find(X) == accounts.end() || accounts[X] < Y) {
+            return false;
+        }
+        accounts[X] -= Y;
+        return true;
+    }
+
+    bool CREDIT(int X, double Y) {
+        if (accounts.find(X) == accounts.end()) {
+            return false;
+        }
+        accounts[X] += Y;
+        return true;
+    }
+
+    double BALANCE(int X) {
+        if (accounts.find(X) == accounts.end()) {
+            return -1;
+        }
+        return accounts[X];
+    }
+};
+
+int main() {
+    int Q;
+    if (!(cin >> Q)) return 0;
+    Bank myBank;
+    while (Q--) {
+        string cmd;
+        cin >> cmd;
+        if (cmd == "CREATE") {
+            int x; double y; cin >> x >> y;
+            cout << (myBank.CREATE(x, y) ? "true" : "false") << endl;
+        } else if (cmd == "DEBIT") {
+            int x; double y; cin >> x >> y;
+            cout << (myBank.DEBIT(x, y) ? "true" : "false") << endl;
+        } else if (cmd == "CREDIT") {
+            int x; double y; cin >> x >> y;
+            cout << (myBank.CREDIT(x, y) ? "true" : "false") << endl;
+        } else if (cmd == "BALANCE") {
+            int x; cin >> x;
+            cout << myBank.BALANCE(x) << endl;
+        }
+    }
+    return 0;
+}
