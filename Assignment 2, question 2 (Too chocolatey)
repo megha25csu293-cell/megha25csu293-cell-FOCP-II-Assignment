@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+// Function to determine the winner based on the chocolate piles
+string solve(int n, vector<int>& arr) {
+    // Sort piles in descending order (Greedy Strategy)
+    sort(arr.begin(), arr.end(), greater<int>());
+
+    long long sumAlex = 0;
+    long long sumBob = 0;
+    
+    // Each player can only consume a specific quantity of sugar once
+    int lastAlex = -1;
+    int lastBob = -1;
+
+    for (int i = 0; i < n; i++) {
+        if (i % 2 == 0) { // Alex's turn
+            if (arr[i] != lastAlex) {
+                sumAlex += arr[i];
+                lastAlex = arr[i];
+            }
+        } else { // Bob's turn
+            if (arr[i] != lastBob) {
+                sumBob += arr[i];
+                lastBob = arr[i];
+            }
+        }
+    }
+
+    // Alex wins only if his total is strictly greater
+    if (sumAlex > sumBob) {
+        return "Alex";
+    } else {
+        return "Bob";
+    }
+}
+
+int main() {
+    // Fast I/O for competitive programming
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int T;
+    // Read number of test cases
+    if (!(cin >> T)) return 0;
+    
+    while (T--) {
+        int n;
+        // Read size of array N
+        if (!(cin >> n)) break;
+        
+        vector<int> arr(n);
+        for (int i = 0; i < n; i++) {
+            cin >> arr[i];
+        }
+        
+        // Output the result of the solve function
+        cout << solve(n, arr) << "\n";
+    }
+    
+    return 0;
+}
