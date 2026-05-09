@@ -1,0 +1,64 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+
+using namespace std;
+
+class MovieTicket {
+private:
+    // Maps Movie ID to a set of User IDs who have booked it
+    map<int, set<int>> bookings;
+    const int MAX_SLOTS = 100;
+
+public:
+    bool BOOK(int X, int Y) {
+        // Check if user already booked or movie is sold out
+        if (bookings[Y].count(X) || bookings[Y].size() >= MAX_SLOTS) {
+            return false;
+        }
+        bookings[Y].insert(X);
+        return true;
+    }
+
+    bool CANCEL(int X, int Y) {
+        // Check if user has a booking to cancel
+        if (bookings[Y].erase(X)) {
+            return true;
+        }
+        return false;
+    }
+
+    bool IS_BOOKED(int X, int Y) {
+        return bookings[Y].count(X) > 0;
+    }
+
+    int AVAILABLE_TICKETS(int Y) {
+        return MAX_SLOTS - bookings[Y].size();
+    }
+};
+
+int main() {
+    int Q;
+    if (!(cin >> Q)) return 0;
+    MovieTicket system;
+    while (Q--) {
+        string cmd;
+        cin >> cmd;
+        if (cmd == "BOOK") {
+            int x, y; cin >> x >> y;
+            cout << (system.BOOK(x, y) ? "true" : "false") << endl;
+        } else if (cmd == "CANCEL") {
+            int x, y; cin >> x >> y;
+            cout << (system.CANCEL(x, y) ? "true" : "false") << endl;
+        } else if (cmd == "IS_BOOKED") {
+            int x, y; cin >> x >> y;
+            cout << (system.IS_BOOKED(x, y) ? "true" : "false") << endl;
+        } else if (cmd == "AVAILABLE_TICKETS") {
+            int y; cin >> y;
+            cout << system.AVAILABLE_TICKETS(y) << endl;
+        }
+    }
+    return 0;
+}
