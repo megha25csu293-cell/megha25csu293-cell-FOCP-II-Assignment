@@ -1,0 +1,28 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    // Fast I/O for performance
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    long long L, R;
+    if (!(cin >> L >> R)) return 0;
+
+    // Logic: Parity of XOR sum depends on the count of odd numbers in [L, R]
+    // Count of odd numbers in [1, K] is (K + 1) / 2
+    long long odds_up_to_R = (R + 1) / 2;
+    long long odds_up_to_L_minus_1 = L / 2;
+    
+    long long count_of_odds = odds_up_to_R - odds_up_to_L_minus_1;
+
+    // If the count of odd numbers is even, XOR result is even.
+    if (count_of_odds % 2 == 0) {
+        cout << "even" << endl;
+    } else {
+        cout << "odd" << endl;
+    }
+
+    return 0;
+}
